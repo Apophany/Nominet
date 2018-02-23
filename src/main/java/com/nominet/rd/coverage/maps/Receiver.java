@@ -1,6 +1,6 @@
 package com.nominet.rd.coverage.maps;
 
-public final class Receiver {
+public final class Receiver implements Tower {
     private final int id;
     private final int x;
     private final int y;
@@ -11,14 +11,17 @@ public final class Receiver {
         this.y = y;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public int getXCoordinate() {
         return x;
     }
 
+    @Override
     public int getYCoordinate() {
         return y;
     }

@@ -22,4 +22,22 @@ public class TwoDGridMap implements Map {
     public MapType getType() {
         return MapType.TWO_DIMENSIONAL_GRID;
     }
+
+    @Override
+    public List<Receiver> getReceivers() {
+        return receivers;
+    }
+
+    @Override
+    public List<Transmitter> getTransmitters() {
+        return transmitters;
+    }
+
+    public int getXMapSize() {
+        return xSize;
+    }
+
+    public int getYMapSize() {
+        return ySize;
+    }
 }

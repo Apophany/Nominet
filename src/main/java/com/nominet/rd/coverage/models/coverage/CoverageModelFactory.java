@@ -1,4 +1,7 @@
-package com.nominet.rd.coverage.models;
+package com.nominet.rd.coverage.models.coverage;
+
+import com.nominet.rd.coverage.models.MapType;
+import com.nominet.rd.coverage.models.Model;
 
 /**
  * Creates the coverage model based on the type of
@@ -8,5 +11,5 @@ package com.nominet.rd.coverage.models;
  */
 @FunctionalInterface
 public interface CoverageModelFactory {
-    CoverageModel create(MapType mapType);
+    Model create(MapType mapType);
 }

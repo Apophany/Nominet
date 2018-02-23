@@ -46,6 +46,13 @@
     </build>
 
     <dependencies>
+        <!-- Google Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.6-jre</version>
+        </dependency>
+
         <!-- LOG4J -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

@@ -36,6 +36,11 @@ public final class MapFileDataStore implements Store<Map>{
     }
 
     @Override
+    public StoreKey getKey() {
+        return StoreKey.MapFile;
+    }
+
+    @Override
     public Map getData() {
         return map;
     }
