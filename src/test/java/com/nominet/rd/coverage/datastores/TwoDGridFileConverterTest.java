@@ -1,5 +1,6 @@
 package com.nominet.rd.coverage.datastores;
 
+import com.nominet.rd.coverage.datastores.map.TwoDGridFileConverter;
 import com.nominet.rd.coverage.maps.Map;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,5 +1,7 @@
-package com.nominet.rd.coverage.datastores;
+package com.nominet.rd.coverage.datastores.map;
 
+import com.nominet.rd.coverage.datastores.Store;
+import com.nominet.rd.coverage.datastores.StoreKey;
 import com.nominet.rd.coverage.maps.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +21,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Loads a map object from a file
  */
-public final class MapFileDataStore implements Store<Map>{
+public final class MapFileDataStore implements Store<Map> {
 
     private static final Logger LOG = LogManager.getLogger(MapFileDataStore.class);
 

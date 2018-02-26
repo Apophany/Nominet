@@ -1,10 +1,17 @@
 package com.nominet.rd.coverage;
 
-import com.nominet.rd.coverage.datastores.MapFileDataStore;
+import com.nominet.rd.coverage.datastores.map.MapConverterFactory;
+import com.nominet.rd.coverage.datastores.map.MapFileDataStore;
 import com.nominet.rd.coverage.datastores.Store;
 import com.nominet.rd.coverage.datastores.StoreManager;
-import com.nominet.rd.coverage.datastores.TwoDGridFileConverter;
 import com.nominet.rd.coverage.maps.Map;
+import com.nominet.rd.coverage.models.*;
+import com.nominet.rd.coverage.models.coverage.CoverageModelFactory;
+import com.nominet.rd.coverage.publishers.ConsolePublisher;
+import com.nominet.rd.coverage.publishers.Publisher;
+
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Factory for creating classes required for execution.
@@ -13,17 +20,41 @@ import com.nominet.rd.coverage.maps.Map;
  */
 public final class AppFactory {
 
-    private final String fileLocation;
+    private static final String FILE_PROPERTY = "receiver-coverage.files.map";
+    private static final String MAP_TYPE_PROPERTY = "receiver-coverage.maps.type";
 
-    public AppFactory(String fileLocation) {
-        this.fileLocation = fileLocation;
+    private final Properties properties;
+
+    public AppFactory(Properties properties) {
+        this.properties = properties;
     }
 
     public Store<Map> createMapFileStore() {
-        return new MapFileDataStore(fileLocation, new TwoDGridFileConverter());
+        final MapConverterFactory converterFactory = new MapConverterFactory();
+
+        final String mapFile = properties.getProperty(FILE_PROPERTY);
+        final MapType mapType = MapType.get(properties.getProperty(MAP_TYPE_PROPERTY));
+
+        return new MapFileDataStore(mapFile, converterFactory.createConverter(mapType));
     }
 
     public StoreManager createStoreManager() {
         return new StoreManager();
+    }
+
+    public Publisher createPublisher() {
+        return new ConsolePublisher();
+    }
+
+    public ModelRunner createModelRunner(HashMap<ModelType, ModelFactory> models, Publisher publisher) {
+        final ModelManager modelManager = new DelegatingModelManager(models);
+        return new ModelRunner(modelManager, publisher);
+    }
+
+    public HashMap<ModelType, ModelFactory> createModelFactories(StoreManager storeManager) {
+        final HashMap<ModelType, ModelFactory> modelFactories = new HashMap<>();
+        final MapType mapType = MapType.get(properties.getProperty(MAP_TYPE_PROPERTY));
+        modelFactories.put(ModelType.Coverage, new CoverageModelFactory(storeManager, mapType));
+        return modelFactories;
     }
 }

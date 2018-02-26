@@ -1,4 +1,4 @@
-package com.nominet.rd.coverage.datastores;
+package com.nominet.rd.coverage.datastores.map;
 
 import com.nominet.rd.coverage.maps.*;
 import org.apache.logging.log4j.LogManager;

@@ -4,7 +4,7 @@ import com.nominet.rd.coverage.models.MapType;
 
 import java.util.List;
 
-public class TwoDGridMap implements Map {
+public final class TwoDGridMap implements Map {
 
     private final int xSize;
     private final int ySize;

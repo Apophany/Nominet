@@ -1,13 +1,7 @@
 package com.nominet.rd.coverage.models;
 
-import com.nominet.rd.coverage.datastores.StoreManager;
+public interface Model {
+    SnapshotResponse snapshot();
 
-import java.util.List;
-
-public interface Model<T extends Context> {
-    T createContext(StoreManager storeManager);
-
-    boolean snapshot(T context, List<String> errors);
-
-    void calculate(T context, List<String> errors);
+    ModelResponse calculate();
 }

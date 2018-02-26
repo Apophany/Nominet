@@ -7,8 +7,8 @@ import com.nominet.rd.coverage.maps.Map;
 import com.nominet.rd.coverage.maps.Receiver;
 import com.nominet.rd.coverage.maps.Transmitter;
 import com.nominet.rd.coverage.models.Model;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.nominet.rd.coverage.models.ModelResponse;
+import com.nominet.rd.coverage.models.SnapshotResponse;
 
 import java.util.List;
 
@@ -18,31 +18,30 @@ import static java.lang.Math.max;
 /**
  * This model calculates the coverage of a set of m receivers on a map
  * of n transmitters. A receiver is said to be covered if there is a
- * transmitter of power (p), a chebyshev distance (d) of d < p away.
+ * transmitter of power (p), a chebyshev distance (d) of d <= p away.
  *
  * This is done by calculating the chebyshev distance between receiver i
- * and the n transmitters, for all i = 1 -> m. The model will stop once it
- * has found a single receiver that is within the range of the transmitter.
+ * and the n transmitters, for all i = 1 -> m, stopping once we have found
+ * a transmitter within range
  *
- * The algorithm takes O(m * n) time
+ * The algorithm takes O(m * n) time to find the coverage for m receivers.
  **/
-public class SimpleFlat2DCoverageModel implements Model<Flat2DCoverageContext> {
+public final class Flat2DCoverageModel implements Model {
 
-    private static final Logger LOG = LogManager.getLogger(Flat2DCoverageContext.class);
+    private final Flat2DModelContext context;
 
-    @Override
-    public Flat2DCoverageContext createContext(StoreManager storeManager) {
+    public Flat2DCoverageModel(StoreManager storeManager) {
         final Store<Map> mapStore = storeManager.getStore(StoreKey.MapFile);
-        return new Flat2DCoverageContext(mapStore);
+        this.context = new Flat2DModelContext(mapStore);
     }
 
     @Override
-    public boolean snapshot(Flat2DCoverageContext context, List<String> errors) {
-        return context.snapshot(errors);
+    public SnapshotResponse snapshot() {
+        return context.snapshot();
     }
 
     @Override
-    public void calculate(Flat2DCoverageContext context, List<String> errors) {
+    public ModelResponse calculate() {
         final Map map = context.getMap();
         final List<Receiver> receivers = map.getReceivers();
         final List<Transmitter> transmitters = map.getTransmitters();
@@ -68,7 +67,7 @@ public class SimpleFlat2DCoverageModel implements Model<Flat2DCoverageContext> {
             }
         }
 
-        LOG.info("Covered receivers: {}/{}", numCovered, receivers.size());
+        return new SimpleFlat2DCoverageModelResponse(numCovered, receivers.size());
     }
 
     /**
@@ -81,5 +80,26 @@ public class SimpleFlat2DCoverageModel implements Model<Flat2DCoverageContext> {
             return -1;
         }
         return max(abs(receiver[0] - receiver[1]), abs(transmitter[1] - transmitter[0]));
+    }
+
+    private static class SimpleFlat2DCoverageModelResponse implements ModelResponse {
+
+        private final int coveredReceivers;
+        private final int totalReceivers;
+
+        SimpleFlat2DCoverageModelResponse(int coveredReceivers, int totalReceivers) {
+            this.coveredReceivers = coveredReceivers;
+            this.totalReceivers = totalReceivers;
+        }
+
+        @Override
+        public boolean didSucceed() {
+            return true;
+        }
+
+        @Override
+        public String serialise() {
+            return String.format("Covered receivers: %d/%d", coveredReceivers, totalReceivers);
+        }
     }
 }
