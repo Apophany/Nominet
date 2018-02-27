@@ -6,7 +6,7 @@ import com.nominet.rd.coverage.datastores.Store;
 import com.nominet.rd.coverage.datastores.StoreManager;
 import com.nominet.rd.coverage.maps.Map;
 import com.nominet.rd.coverage.models.*;
-import com.nominet.rd.coverage.models.coverage.CoverageModelFactory;
+import com.nominet.rd.coverage.models.CoverageModelFactory;
 import com.nominet.rd.coverage.publishers.ConsolePublisher;
 import com.nominet.rd.coverage.publishers.Publisher;
 
@@ -34,6 +34,9 @@ public final class AppFactory {
 
         final String mapFile = properties.getProperty(FILE_PROPERTY);
         final MapType mapType = MapType.get(properties.getProperty(MAP_TYPE_PROPERTY));
+        if (mapType == null) {
+            throw new IllegalStateException("A valid map type must be specified in the properties");
+        }
 
         return new MapFileDataStore(mapFile, converterFactory.createConverter(mapType));
     }

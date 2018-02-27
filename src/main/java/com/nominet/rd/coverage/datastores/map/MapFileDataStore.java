@@ -34,7 +34,7 @@ public final class MapFileDataStore implements Store<Map> {
         if (converter == null) {
             throw new IllegalArgumentException("Map converter cannot be null");
         }
-        this.map = requireNonNull(loadMap(fileLocation, converter));
+        this.map = requireNonNull(loadMap(fileLocation, converter), "Valid map file must be specified");
     }
 
     @Override

@@ -33,6 +33,17 @@ public final class Transmitter implements Tower {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transmitter that = (Transmitter) o;
+        return id == that.id &&
+                x == that.x &&
+                y == that.y &&
+                power == that.power;
+    }
+
+    @Override
     public String toString() {
         return "Transmitter{" +
                 "id=" + id +

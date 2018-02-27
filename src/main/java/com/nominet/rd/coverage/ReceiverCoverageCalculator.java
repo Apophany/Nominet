@@ -5,6 +5,8 @@ import com.nominet.rd.coverage.models.ModelFactory;
 import com.nominet.rd.coverage.models.ModelRunner;
 import com.nominet.rd.coverage.models.ModelType;
 import com.nominet.rd.coverage.publishers.Publisher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Properties;
@@ -15,6 +17,8 @@ import java.util.Properties;
  * the models to be run
  */
 public final class ReceiverCoverageCalculator {
+
+    private static final Logger LOG = LogManager.getLogger(ReceiverCoverageCalculator.class);
 
     private final ModelRunner modelRunner;
 
@@ -31,9 +35,7 @@ public final class ReceiverCoverageCalculator {
     }
 
     public void run() {
-        boolean didCalcCoverage = modelRunner.run(ModelType.Coverage);
-        if (didCalcCoverage) {
-            modelRunner.run(ModelType.Booster);
-        }
+        LOG.info("Running coverage model");
+        modelRunner.run(ModelType.Coverage);
     }
 }

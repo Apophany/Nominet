@@ -25,11 +25,11 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.zopa.rates.RateCalculatorApp</mainClass>
+                            <mainClass>com.nominet.rd.coverage.ReceiverCoverageApp</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
-                        <descriptorRef>-fat</descriptorRef>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
                 <executions>

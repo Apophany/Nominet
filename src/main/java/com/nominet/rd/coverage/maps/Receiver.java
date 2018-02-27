@@ -27,6 +27,16 @@ public final class Receiver implements Tower {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Receiver receiver = (Receiver) o;
+        return id == receiver.id &&
+                x == receiver.x &&
+                y == receiver.y;
+    }
+
+    @Override
     public String toString() {
         return "Receiver{" +
                 "id=" + id +

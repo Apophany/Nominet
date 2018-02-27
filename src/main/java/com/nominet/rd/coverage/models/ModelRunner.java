@@ -1,6 +1,8 @@
 package com.nominet.rd.coverage.models;
 
 import com.nominet.rd.coverage.publishers.Publisher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Basic class for wrapping model creation and running
@@ -8,6 +10,9 @@ import com.nominet.rd.coverage.publishers.Publisher;
  * safe publisher to run distributed tasks
  */
 public final class ModelRunner {
+
+    private static final Logger LOG = LogManager.getLogger(ModelRunner.class);
+
     private final ModelManager modelManager;
     private final Publisher publisher;
 
@@ -27,6 +32,8 @@ public final class ModelRunner {
             publisher.publish(snapshot);
             return false;
         }
+
+        LOG.info("Model snapshot succeeded");
 
         final ModelResponse response = model.calculate();
         publisher.publish(response);

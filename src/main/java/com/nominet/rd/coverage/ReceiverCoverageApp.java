@@ -21,19 +21,8 @@ public class ReceiverCoverageApp {
             System.exit(1);
         }
 
-        final ReceiverCoverageCalculator app = createApp(appProperties);
-        if (app != null) {
-            app.run();
-        }
-    }
-
-    private static ReceiverCoverageCalculator createApp(Properties appProperties) {
-        try {
-            return new ReceiverCoverageCalculator(appProperties);
-        } catch (Exception e) {
-            LOG.fatal("Failed to initialise application: {}", e.getMessage());
-            return null;
-        }
+        final ReceiverCoverageCalculator app = new ReceiverCoverageCalculator(appProperties);
+        app.run();
     }
 
     private static Properties loadProperties() {
